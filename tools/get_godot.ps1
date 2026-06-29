@@ -34,7 +34,7 @@ $GodotVersion   = '4.3-stable'
 # SHA-256 of the upstream Godot_v4.3-stable_win64.exe.zip. Set on first
 # publish: run once, the script prints the hash, paste it here to enable
 # verification.
-$GodotSha256Win = '<set-on-first-publish>'
+$GodotSha256Win = '8f2c75b734bd956027ae3ca92c41f78b5d5a255dacc0f20e4e3c523c545ad410'
 
 $here   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dstDir = Join-Path $here 'godot'
