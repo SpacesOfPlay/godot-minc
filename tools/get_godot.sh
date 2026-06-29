@@ -18,7 +18,7 @@ set -e
 GODOT_VERSION='4.3-stable'
 # SHA-256 of the upstream archives. Set on first publish: run once, the
 # script prints the hash, paste it here to enable verification.
-GODOT_SHA256_MACOS='<set-on-first-publish>'
+GODOT_SHA256_MACOS='d17940b913b3f3bf54c941eeb09042099d93865c6e2638e09e20f7c649aa474a'
 GODOT_SHA256_LINUX_X64='7de56444b130b10af84d19c7e0cf63cf9e9937ee4ba94364c3b7dd114253ca21'
 
 here="$(cd "$(dirname "$0")" && pwd)"
