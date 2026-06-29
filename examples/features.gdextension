@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "minc_gdextension_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+macos          = "res://bin/libfeatures.dylib"   ; minc features.mc --shared --target macos
+windows.x86_64 = "res://bin/features.dll"        ; minc features.mc --shared --target windows
+linux.x86_64   = "res://bin/libfeatures.so"      ; minc features.mc --shared --target linux

@@ -1,0 +1,19 @@
+; Godot 4 project hosting the minc GDExtension examples (cube, hello, game).
+; Each example is its own .gdextension -> bin/lib<name>.dylib + <name>.tscn.
+
+config_version=5
+
+[application]
+
+config/name="minc Godot examples"
+run/main_scene="res://cube.tscn"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=1000
+window/size/mode=2
+
+[debug]
+
+settings/stdout/verbose_stdout=true

@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://b0mincstarter01"]
+
+; Root is the minc-defined node. On run, Godot calls its _ready.
+[node name="Root" type="HelloMinc"]

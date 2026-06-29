@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "minc_gdextension_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+macos          = "res://bin/libcube.dylib"   ; minc cube.mc --shared --target macos    (native dylib)
+windows.x86_64 = "res://bin/cube.dll"        ; minc cube.mc --shared --target windows  (native PE export)
+linux.x86_64   = "res://bin/libcube.so"      ; minc cube.mc --shared --target linux    (native .so)

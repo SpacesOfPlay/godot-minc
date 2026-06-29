@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "minc_gdextension_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+macos          = "res://bin/libgame.dylib"   ; minc game.mc --shared --target macos
+windows.x86_64 = "res://bin/game.dll"        ; minc game.mc --shared --target windows
+linux.x86_64   = "res://bin/libgame.so"      ; minc game.mc --shared --target linux

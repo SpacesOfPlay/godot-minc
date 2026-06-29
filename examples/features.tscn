@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b0mincfeatures01"]
+
+; Root is our extension class. On run, Godot instantiates it and calls _ready,
+; which exercises the binding surface; watch stderr for the minc lines.
+[node name="Root" type="MincFeatures"]

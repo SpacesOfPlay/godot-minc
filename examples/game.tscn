@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b0mincsokoban01"]
+
+; Root is the minc-defined SokoGame node. _ready builds the maze; _process
+; reads arrow keys and animates. Run windowed (rendering needs a GPU window).
+[node name="Root" type="SokoGame"]

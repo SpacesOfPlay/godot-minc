@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b0mincgdspike01"]
+
+; Root is our extension class. On run, Godot instantiates it and calls _ready,
+; which builds the cube scene.
+[node name="Root" type="MincNode"]

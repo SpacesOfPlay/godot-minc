@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "minc_gdextension_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+macos          = "res://bin/libhello.dylib"   ; minc hello.mc --shared --target macos
+windows.x86_64 = "res://bin/hello.dll"        ; minc hello.mc --shared --target windows
+linux.x86_64   = "res://bin/libhello.so"      ; minc hello.mc --shared --target linux

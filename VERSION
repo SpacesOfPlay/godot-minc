@@ -1,0 +1,5 @@
+godot-minc snapshot
+  godot:  4.3-stable (download pinned by tools/get_godot.*)
+  minc:   download pinned by tools/get_minc.*
+  built:  2026-06-29 23:27:23
+  build:  ad85f143
