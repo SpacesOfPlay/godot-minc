@@ -2,6 +2,5 @@
 examples/bin/
 examples/.godot/
 
-# Toolchains fetched by tools/get_minc.* and tools/get_godot.*.
-tools/minc/
-tools/godot/
+# Godot editor fetched by get_godot.*.
+/godot/

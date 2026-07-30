@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b0mincasteroids1"]
+
+; Root is the minc engine node. Arrows steer, up thrusts, space fires.
+; Edit asteroids/script.mc while it runs to hot-reload the game logic.
+[node name="Root" type="AsteroidsGame"]

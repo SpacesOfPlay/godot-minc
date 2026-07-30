@@ -62,18 +62,18 @@ void fragment() {
 }
 """;
 
-@c_abi void* mincnode_create(void* class_userdata) {
+void* mincnode_create(void* class_userdata) {
     var inst = new(MincInstance);
     inst.owner = gd_construct(class_userdata, cast(void*, inst));
     return cast(void*, inst.owner);
 }
 
-@c_abi void mincnode_free(void* class_userdata, void* instance) {
+void mincnode_free(void* class_userdata, void* instance) {
     if instance != null { free(instance); }
     return;
 }
 
-@c_abi void mincnode_ready(void* instance, void* args, void* ret) {
+void mincnode_ready(void* instance, void* args, void* ret) {
     var inst = cast(MincInstance*, instance);
     GdObject* self = inst.owner;
 
@@ -115,7 +115,7 @@ void fragment() {
     return;
 }
 
-@c_abi void mincnode_process(void* instance, void* p_args, void* ret) {
+void mincnode_process(void* instance, void* p_args, void* ret) {
     var inst = cast(MincInstance*, instance);
     var args = cast(void**, p_args);
     f64 delta = *(cast(f64*, *args));

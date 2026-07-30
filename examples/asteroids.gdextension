@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "minc_gdextension_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+macos          = "res://bin/libasteroids.dylib"   ; minc asteroids.mc --shared --target macos
+windows.x86_64 = "res://bin/asteroids.dll"        ; minc asteroids.mc --shared --target windows
+linux.x86_64   = "res://bin/libasteroids.so"      ; minc asteroids.mc --shared --target linux

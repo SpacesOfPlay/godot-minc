@@ -202,7 +202,7 @@ gd_bind_method(cls, "move",       mn_move,      -1,         2, TYPE_VECTOR3, TYP
 gd_add_signal(cls, "value_changed", 1, TYPE_INT);
 gd_add_signal(cls, "pair_set",      2, TYPE_INT, TYPE_INT);
 
-@c_abi void mn_move(void* mud, void* inst, void* p_args, void* ret) {
+void mn_move(void* mud, void* inst, void* p_args, void* ret) {
     var args = cast(void**, p_args);
     GdVector3* to = cast(GdVector3*, args[0]);   // ptrcall ABI: one ptr per arg
     f64 speed     = *(cast(f64*, args[1]));

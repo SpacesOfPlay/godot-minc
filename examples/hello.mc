@@ -14,25 +14,25 @@ struct State {
 
 // Constructor: allocate state, then gd_construct builds the registered base
 // object and attaches the state to it.
-@c_abi void* hello_create(void* class_userdata) {
+void* hello_create(void* class_userdata) {
     var s = new(State);
     s.owner = gd_construct(class_userdata, cast(void*, s));
     return cast(void*, s.owner);
 }
 
-@c_abi void hello_free(void* class_userdata, void* instance) {
+void hello_free(void* class_userdata, void* instance) {
     if instance != null { free(instance); }
     return;
 }
 
 // _ready runs once when the node enters the scene tree.
-@c_abi void hello_ready(void* instance, void* args, void* ret) {
+void hello_ready(void* instance, void* args, void* ret) {
     gd_print("Hello from minc! (HelloMinc._ready)");
     return;
 }
 
 // _process runs every frame; args[0] is the float delta (8-byte double).
-@c_abi void hello_process(void* instance, void* p_args, void* ret) {
+void hello_process(void* instance, void* p_args, void* ret) {
     var s = cast(State*, instance);
     s.frames = s.frames + 1;
     return;

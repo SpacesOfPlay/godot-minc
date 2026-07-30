@@ -465,7 +465,7 @@ i32 gd_vt_cap;
 
 // The one get_virtual all classes share: looks the (class, name) pair up in
 // the binding table and returns the callback, or null.
-@c_abi void* gd_core_get_virtual(void* class_userdata, void* p_name) {
+void* gd_core_get_virtual(void* class_userdata, void* p_name) {
     i32 class_id = cast(i32, cast(i64, class_userdata));
     i64 name_data = *(cast(i64*, p_name));
     for i32 i = 0; i < gd_vt_count; i = i + 1 {
@@ -493,7 +493,7 @@ struct GdMethodMeta {
 // gd_bind_method. Godot dispatches here for Variant calls (Object.set/get,
 // scripts, signal callbacks): it unmarshals the Variant args to typed values,
 // calls the same ptrcall impl you wrote, and marshals the return back.
-@c_abi void gd_core_method_call(void* mud, void* instance, void* p_args, i64 argc, void* r_ret, void* r_error) {
+void gd_core_method_call(void* mud, void* instance, void* p_args, i64 argc, void* r_ret, void* r_error) {
     var meta = cast(GdMethodMeta*, mud);
     i64[64] valbuf;        // GD_MAX_METHOD_ARGS slots x 8 i64 (64 bytes) each
     void*[8] targs;
@@ -671,7 +671,7 @@ void gd_add_signal(i32 class_id, u8* name, i32 nargs, ...) {
 
 // --- Initialization -------------------------------------------------------
 
-@c_abi void gd_initialize(void* userdata, i32 level) {
+void gd_initialize(void* userdata, i32 level) {
     if level != GD_INIT_SCENE { return; }
     gd_empty_sn = gd_intern("");
     gd_empty_str_slot = 0;
@@ -681,7 +681,7 @@ void gd_add_signal(i32 class_id, u8* name, i32 nargs, ...) {
     return;
 }
 
-@c_abi void gd_deinitialize(void* userdata, i32 level) {
+void gd_deinitialize(void* userdata, i32 level) {
     if level != GD_INIT_SCENE { return; }
     for i32 i = 0; i < gd_sn_count; i = i + 1 {
         gd_destroy(gd_dtor_stringname, cast(void*, gd_sn_slots[i]));
@@ -691,7 +691,7 @@ void gd_add_signal(i32 class_id, u8* name, i32 nargs, ...) {
 }
 
 // --- Entry point ----------------------------------------------------------
-@c_abi u8 minc_gdextension_init(void* p_get_proc_address, void* p_library, void* r_initialization) {
+u8 minc_gdextension_init(void* p_get_proc_address, void* p_library, void* r_initialization) {
     var get_proc = cast(fn(u8*): void*, p_get_proc_address);
     gd_library = p_library;
 

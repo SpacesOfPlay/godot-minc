@@ -10,8 +10,8 @@
 # gd_register(). It builds to examples/bin/lib<name>.{dylib,so} (matching
 # examples/<name>.gdextension) and runs examples/<name>.tscn.
 #
-# Compiler: tools/minc/ (run ./tools/get_minc.sh) or $MINC or PATH.
-# Engine:   tools/godot/ (run ./tools/get_godot.sh) or $GODOT or PATH.
+# Compiler: $MINC or PATH (install from minc.dev — see install_minc.md).
+# Engine:   godot/ (run ./get_godot.sh) or $GODOT or PATH.
 set -e
 
 EXAMPLE=""
@@ -46,10 +46,10 @@ case "$(uname -s)" in
     *)      echo "unsupported OS for build.sh (use build.ps1 on Windows)" >&2; exit 1 ;;
 esac
 
-# Locate the minc compiler: $MINC env, then the downloaded tools/minc/, then a
-# sibling build (../build/minc), then PATH.
-if [ -n "$MINC" ] && [ -x "$MINC" ]; then :;   # honour the caller's $MINC
-elif [ -x "$ROOT/tools/minc/minc" ]; then MINC="$ROOT/tools/minc/minc";
+# Locate the minc compiler: $MINC env (install dir, or a direct binary
+# path), then a sibling build (../build/minc), then PATH.
+if [ -n "$MINC" ] && [ -d "$MINC" ] && [ -x "$MINC/minc" ]; then MINC="$MINC/minc";
+elif [ -n "$MINC" ] && [ -x "$MINC" ]; then :;   # honour the caller's $MINC
 elif [ -x "$ROOT/../build/minc" ]; then MINC="$ROOT/../build/minc";
 elif command -v minc >/dev/null 2>&1; then MINC="$(command -v minc)";
 else MINC="";
@@ -57,8 +57,8 @@ fi
 if [ -z "$MINC" ]; then
     echo "" >&2
     echo "minc compiler not found." >&2
-    echo "  Fetch it:  ./tools/get_minc.sh   (drops tools/minc/minc)" >&2
-    echo "  Or set \$MINC to an existing minc, or put it on PATH." >&2
+    echo "  Install it:  curl -fsSL https://minc.dev/install | bash" >&2
+    echo "  Or set \$MINC to a minc install dir, or put minc on PATH." >&2
     exit 1
 fi
 
@@ -75,22 +75,40 @@ mkdir -p "$PROJ/bin"
       "$MINC" "$mc" --shared --target "$TARGET" -o "examples/bin/${PREFIX}${n}.${EXT}"
   done )
 
+# The asteroids example embeds the minc compiler: stage libminc next to the
+# extension libraries (searched next to the compiler, then ../build/), plus
+# the minc stdlib as bin/lib/ so runtime-compiled scripts can `import math;`
+# (libminc anchors imports on its own directory).
+case "$TARGET" in
+    macos) LM="libminc.dylib" ;;
+    *)     LM="libminc.so" ;;
+esac
+for lm in "$(dirname "$MINC")/$LM" "$ROOT/../build/$LM"; do
+    if [ -f "$lm" ]; then cp -f "$lm" "$PROJ/bin/"; break; fi
+done
+MINC_LIB="$(dirname "$MINC")/lib"
+[ -d "$MINC_LIB" ] || MINC_LIB="$ROOT/../lib"
+if [ -d "$MINC_LIB" ]; then
+    mkdir -p "$PROJ/bin/lib"
+    cp -f "$MINC_LIB"/*.mc "$PROJ/bin/lib/"
+fi
+
 if [ "$NORUN" = 1 ]; then echo ":: built (skipping run)"; exit 0; fi
 
 # Locate Godot only when we're actually going to launch: $GODOT env, then the
-# downloaded tools/godot/, then PATH.
+# downloaded godot/, then PATH.
 if [ -n "$GODOT" ] && [ -x "$GODOT" ]; then :;   # honour the caller's $GODOT
-elif [ "$TARGET" = "macos" ] && [ -x "$ROOT/tools/godot/Godot.app/Contents/MacOS/Godot" ]; then
-    GODOT="$ROOT/tools/godot/Godot.app/Contents/MacOS/Godot";
-elif [ "$TARGET" = "linux" ] && [ -x "$ROOT/tools/godot/Godot_v4.3-stable_linux.x86_64" ]; then
-    GODOT="$ROOT/tools/godot/Godot_v4.3-stable_linux.x86_64";
+elif [ "$TARGET" = "macos" ] && [ -x "$ROOT/godot/Godot.app/Contents/MacOS/Godot" ]; then
+    GODOT="$ROOT/godot/Godot.app/Contents/MacOS/Godot";
+elif [ "$TARGET" = "linux" ] && [ -x "$ROOT/godot/Godot_v4.3-stable_linux.x86_64" ]; then
+    GODOT="$ROOT/godot/Godot_v4.3-stable_linux.x86_64";
 elif command -v godot >/dev/null 2>&1; then GODOT="$(command -v godot)";
 else GODOT="";
 fi
 if [ -z "$GODOT" ]; then
     echo "" >&2
     echo "Godot engine not found." >&2
-    echo "  Fetch it:  ./tools/get_godot.sh   (drops tools/godot/)" >&2
+    echo "  Fetch it:  ./get_godot.sh   (drops godot/)" >&2
     echo "  Or set \$GODOT to an existing Godot 4.3 binary, or put it on PATH." >&2
     echo "  (Compilation succeeded; re-run without --no-run once Godot is available.)" >&2
     exit 1

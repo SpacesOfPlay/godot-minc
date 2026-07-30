@@ -1,7 +1,7 @@
 # godot-minc
 
 Write [Godot](https://godotengine.org) game logic in
-[minc](https://github.com/SpacesOfPlay/minc-dev), a small, fast, compiled
+[minc](https://minc.dev), a small, fast, compiled
 language, and load it as a native GDExtension.
 
 minc emits the platform shared library (`.dll` / `.so` / `.dylib`) 
@@ -10,7 +10,7 @@ directly, and Godot loads it.
 ```mc
 import godot;
 
-@c_abi void hello_ready(void* instance, void* args, void* ret) {
+void hello_ready(void* instance, void* args, void* ret) {
     gd_print("Hello from minc! (HelloMinc._ready)");
     return;
 }
@@ -24,9 +24,11 @@ void gd_register() {
 
 ## Quickstart
 
-You need two things: the minc compiler and the Godot 4.3 engine. The
-`tools/` scripts fetch pinned, SHA-verified copies into the repo (gitignored);
-the build script picks them up automatically.
+You need two things: the minc compiler and the Godot 4.3 engine.
+The one-liner in [install_minc.md](install_minc.md) installs the
+compiler from [minc.dev](https://minc.dev); `get_godot.*` fetches a
+pinned, SHA-verified Godot into `godot/` (gitignored). The build script
+picks both up automatically.
 
 See [Using an existing install](#using-an-existing-install).
 
@@ -35,8 +37,8 @@ See [Using an existing install](#using-an-existing-install).
 ```powershell
 git clone <this-repo> godot-minc
 cd godot-minc
-./tools/get_minc.ps1      # downloads the minc compiler -> tools/minc/
-./tools/get_godot.ps1     # downloads Godot 4.3         -> tools/godot/
+powershell -c "irm minc.dev/install.ps1 | iex"   # install minc
+./get_godot.ps1           # downloads Godot 4.3 -> godot/
 ./build.ps1               # lists the available examples
 ./build.ps1 cube          # builds the examples + runs cube.tscn
 ```
@@ -46,8 +48,8 @@ cd godot-minc
 ```sh
 git clone <this-repo> godot-minc
 cd godot-minc
-./tools/get_minc.sh       # downloads the minc compiler -> tools/minc/
-./tools/get_godot.sh      # downloads Godot 4.3         -> tools/godot/
+curl -fsSL https://minc.dev/install | bash       # install minc
+./get_godot.sh            # downloads Godot 4.3 -> godot/
 ./build.sh                # lists the available examples
 ./build.sh cube           # builds the examples + runs cube.tscn
 ```
@@ -58,10 +60,11 @@ Run with no argument to list the examples.
 ## Using an existing install
 
 - minc: set `MINC` (`$env:MINC` on Windows) to your `minc` binary, or put it
-  on `PATH`. The build script checks `MINC`, then `tools/minc/`, then `PATH`.
+  on `PATH` (the minc.dev installer does). The build script checks `MINC`,
+  then `PATH`.
 
 - Godot: set `GODOT` to your Godot 4.3 binary, or put `godot` on `PATH`. The
-  build script checks `GODOT`, then `tools/godot/`, then `PATH`. The `get_godot`
+  build script checks `GODOT`, then `godot/`, then `PATH`. The `get_godot`
   scripts no-op when `GODOT` is already set.
 
 ```sh
@@ -93,8 +96,9 @@ examples/bin/cube.dll        cube.gdextension  ->  Godot loads it
 lib/        the binding modules (import godot; resolves to lib/godot.mc)
 examples/   the Godot project (one project, several example extensions)
 bindgen/    the binding generator + Godot API spec (extend the bound surface)
-tools/      get_minc / get_godot download helpers
-build.ps1 / build.sh   build an example + run its scene
+install_minc.md          how to install the minc compiler
+get_godot.ps1 / .sh      download the Godot editor -> godot/
+build.ps1 / build.sh     build an example + run its scene
 ```
 
 - Examples: [`examples/README.md`](examples/README.md).
@@ -106,6 +110,7 @@ build.ps1 / build.sh   build an example + run its scene
 The bindings and examples in this repo are under [`LICENSE.md`](LICENSE.md).
 
 The minc compiler is closed-source, separately licensed software. It is not
-covered by this repo's license; see the license shipped in `tools/minc/`. 
+covered by this repo's license; see the license shipped with the minc
+install (in `~/.minc`).
 
 Godot is MIT-licensed (godotengine.org).

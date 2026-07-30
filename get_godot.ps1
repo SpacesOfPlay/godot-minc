@@ -2,8 +2,8 @@
 #
 # godot-minc needs the Godot editor/engine to import and run the example
 # project. This script fetches the pinned upstream release, verifies its
-# SHA-256, and unpacks it into `tools/godot/` (gitignored). `build.ps1`
-# picks it up automatically — no PATH changes needed.
+# SHA-256, and unpacks it into `godot/` (gitignored). `build.ps1` picks
+# it up automatically — no PATH changes needed.
 #
 # If you already have Godot 4.3, skip this and point `$env:GODOT` at your binary.
 #
@@ -12,7 +12,8 @@
 
 $ErrorActionPreference = 'Stop'
 
-# Force TLS 1.2 — see get_minc.ps1 for why.
+# Force TLS 1.2 — Windows PowerShell defaults to SSL3/TLS 1.0,
+# which GitHub's CDN rejects.
 [Net.ServicePointManager]::SecurityProtocol = `
     [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
@@ -34,7 +35,7 @@ $GodotVersion   = '4.3-stable'
 # SHA-256 of the upstream Godot_v4.3-stable_win64.exe.zip. Set on first
 # publish: run once, the script prints the hash, paste it here to enable
 # verification.
-$GodotSha256Win = '8f2c75b734bd956027ae3ca92c41f78b5d5a255dacc0f20e4e3c523c545ad410'
+$GodotSha256Win = '<set-on-first-publish>'
 
 $here   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dstDir = Join-Path $here 'godot'
@@ -46,7 +47,7 @@ if ($env:GODOT -and (Test-Path $env:GODOT)) {
 }
 if (Test-Path $exe) {
     Write-Host "Godot already installed at $exe — skipping download."
-    Write-Host "(delete tools\godot\ to force a re-fetch.)"
+    Write-Host "(delete godot\ to force a re-fetch.)"
     exit 0
 }
 
@@ -60,14 +61,14 @@ Invoke-WebRequestWithRetry -Uri $zipUrl -OutFile $zipPath
 $actualSha = (Get-FileHash $zipPath -Algorithm SHA256).Hash.ToLower()
 if ($GodotSha256Win -eq '<set-on-first-publish>') {
     Write-Warning "SHA-256 not pinned. Got: $actualSha"
-    Write-Warning "Update tools/get_godot.ps1's `$GodotSha256Win with this value to enable verification."
+    Write-Warning "Update get_godot.ps1's `$GodotSha256Win with this value to enable verification."
 } elseif ($actualSha -ne $GodotSha256Win.ToLower()) {
     Remove-Item $zipPath
     throw "Godot download SHA-256 mismatch. Expected $GodotSha256Win, got $actualSha. Refusing to proceed."
 }
 
 # The win64 zip holds Godot_v<ver>_win64.exe (and a *_console.exe variant)
-# at its root. Unpack both into tools/godot/; build.ps1 prefers the GUI exe.
+# at its root. Unpack both into godot/; build.ps1 prefers the GUI exe.
 if (-not (Test-Path $dstDir)) { New-Item -ItemType Directory -Path $dstDir | Out-Null }
 Expand-Archive -Path $zipPath -DestinationPath $dstDir -Force
 Remove-Item $zipPath -Force

@@ -6,17 +6,16 @@ MIT License, below.
 
 > **The minc compiler is NOT covered by the license below.** This repo ships
 > only minc-language source. Building it requires the `minc` compiler from
-> <https://github.com/SpacesOfPlay/minc-dev/releases>, which is closed-source
-> proprietary software. The optional helper `tools/get_minc.ps1` /
-> `tools/get_minc.sh` downloads that binary on demand into `tools/minc/`
-> (gitignored). The terms governing your use of `minc.exe` / `minc` are stated
-> in the `LICENSE.md` shipped inside that minc release (`tools/minc/LICENSE.md`
-> after running the fetcher).
+> <https://minc.dev>, which is closed-source proprietary software. Install it
+> with the one-liner in `install_minc.md` (the toolchain lands in
+> `~/.minc`). The terms governing
+> your use of `minc.exe` / `minc` are stated in the `LICENSE.md` shipped
+> inside the minc install.
 
 > **Godot is separately licensed.** The Godot engine is MIT-licensed by the
 > Godot Engine contributors (<https://godotengine.org/license>). This repo does
-> not redistribute Godot; `tools/get_godot.ps1` / `tools/get_godot.sh` download
-> an official release on demand into `tools/godot/` (gitignored). The bindings
+> not redistribute Godot; `get_godot.ps1` / `get_godot.sh` download
+> an official release on demand into `godot/` (gitignored). The bindings
 > in `lib/godot_classes.mc` / `godot_enums.mc` / `godot_utility.mc` are
 > generated from Godot's public `extension_api.json` (vendored in `bindgen/`).
 

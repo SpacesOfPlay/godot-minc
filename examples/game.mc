@@ -478,18 +478,18 @@ void soko_reset(SokoInstance* s, GdObject* self) {
 
 // --- virtuals -------------------------------------------------------------
 
-@c_abi void* soko_create(void* class_userdata) {
+void* soko_create(void* class_userdata) {
     var s = new(SokoInstance);
     s.owner = gd_construct(class_userdata, cast(void*, s));
     return cast(void*, s.owner);
 }
 
-@c_abi void soko_free(void* class_userdata, void* instance) {
+void soko_free(void* class_userdata, void* instance) {
     if instance != null { free(instance); }
     return;
 }
 
-@c_abi void soko_ready(void* instance, void* args, void* ret) {
+void soko_ready(void* instance, void* args, void* ret) {
     var s = cast(SokoInstance*, instance);
     soko_parse(s);
     s.act_up = gd_intern("ui_up");
@@ -505,7 +505,7 @@ void soko_reset(SokoInstance* s, GdObject* self) {
     return;
 }
 
-@c_abi void soko_process(void* instance, void* p_args, void* ret) {
+void soko_process(void* instance, void* p_args, void* ret) {
     var s = cast(SokoInstance*, instance);
     var args = cast(void**, p_args);
     f64 delta = *(cast(f64*, *args));

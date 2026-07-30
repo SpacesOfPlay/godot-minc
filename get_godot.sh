@@ -3,8 +3,8 @@
 #
 # godot-minc needs the Godot editor/engine to import and run the example
 # project. This script fetches the pinned upstream release for the current
-# platform, verifies its SHA-256, and unpacks it into `tools/godot/`
-# (gitignored). `build.sh` picks it up automatically — no PATH changes.
+# platform, verifies its SHA-256, and unpacks it into `godot/` (gitignored).
+# `build.sh` picks it up automatically — no PATH changes.
 #
 # If you already have Godot 4.3, skip this and point $GODOT at your binary.
 #
@@ -18,7 +18,7 @@ set -e
 GODOT_VERSION='4.3-stable'
 # SHA-256 of the upstream archives. Set on first publish: run once, the
 # script prints the hash, paste it here to enable verification.
-GODOT_SHA256_MACOS='d17940b913b3f3bf54c941eeb09042099d93865c6e2638e09e20f7c649aa474a'
+GODOT_SHA256_MACOS='<set-on-first-publish>'
 GODOT_SHA256_LINUX_X64='7de56444b130b10af84d19c7e0cf63cf9e9937ee4ba94364c3b7dd114253ca21'
 
 here="$(cd "$(dirname "$0")" && pwd)"
@@ -42,14 +42,14 @@ case "$(uname -s)/$(uname -m)" in
         ;;
     *)
         echo "Unsupported platform: $(uname -s)/$(uname -m). Builds: macOS universal, Linux x86_64." >&2
-        echo "On Windows, run tools/get_godot.ps1 instead." >&2
+        echo "On Windows, run get_godot.ps1 instead." >&2
         exit 1
         ;;
 esac
 
 if [ -e "$target" ]; then
     echo "Godot already installed at $target — skipping download."
-    echo "(delete tools/godot/ to force a re-fetch.)"
+    echo "(delete godot/ to force a re-fetch.)"
     exit 0
 fi
 
@@ -78,7 +78,7 @@ fi
 
 if [ "$sha" = '<set-on-first-publish>' ]; then
     echo "WARNING: SHA-256 not pinned. Got: $actual_sha" >&2
-    echo "Update tools/get_godot.sh's SHA for this platform with this value." >&2
+    echo "Update get_godot.sh's SHA for this platform with this value." >&2
 elif [ "$actual_sha" != "$sha" ]; then
     rm -f "$zip_path"
     echo "Godot download SHA-256 mismatch. Expected $sha, got $actual_sha. Refusing to proceed." >&2

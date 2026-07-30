@@ -21,21 +21,21 @@ struct FeatureState {
 }
 
 // --- Registered method implementations (typed ptrcall) --------------------
-@c_abi void mn_set_value(void* mud, void* instance, void* p_args, void* ret) {
+void mn_set_value(void* mud, void* instance, void* p_args, void* ret) {
     var inst = cast(FeatureState*, instance);
     var args = cast(void**, p_args);
     inst.value = *(cast(i64*, *args));
     return;
 }
 
-@c_abi void mn_get_value(void* mud, void* instance, void* p_args, void* ret) {
+void mn_get_value(void* mud, void* instance, void* p_args, void* ret) {
     var inst = cast(FeatureState*, instance);
     *(cast(i64*, ret)) = inst.value;
     return;
 }
 
 // Signal handler, connected to "value_changed".
-@c_abi void mn_on_value_changed(void* mud, void* instance, void* p_args, void* ret) {
+void mn_on_value_changed(void* mud, void* instance, void* p_args, void* ret) {
     var inst = cast(FeatureState*, instance);
     var args = cast(void**, p_args);
     inst.signal_received = inst.signal_received + 1;
@@ -44,7 +44,7 @@ struct FeatureState {
 }
 
 // Handler for the 2-arg "pair_set" signal.
-@c_abi void mn_on_pair(void* mud, void* instance, void* p_args, void* ret) {
+void mn_on_pair(void* mud, void* instance, void* p_args, void* ret) {
     var inst = cast(FeatureState*, instance);
     var args = cast(void**, p_args);
     i64 lo = *(cast(i64*, args[0]));
@@ -54,19 +54,19 @@ struct FeatureState {
 }
 
 // --- Class lifecycle ------------------------------------------------------
-@c_abi void* features_create(void* class_userdata) {
+void* features_create(void* class_userdata) {
     var inst = new(FeatureState);
     inst.owner = gd_construct(class_userdata, cast(void*, inst));
     return cast(void*, inst.owner);
 }
 
-@c_abi void features_free(void* class_userdata, void* instance) {
+void features_free(void* class_userdata, void* instance) {
     if instance != null { free(instance); }
     return;
 }
 
 // --- Virtuals -------------------------------------------------------------
-@c_abi void features_ready(void* instance, void* args, void* ret) {
+void features_ready(void* instance, void* args, void* ret) {
     gd_puts("MincFeatures._ready ran (minc GDExtension)\n");
     var inst = cast(FeatureState*, instance);
     GdObject* self = inst.owner;
@@ -209,7 +209,7 @@ struct FeatureState {
     return;
 }
 
-@c_abi void features_process(void* instance, void* p_args, void* ret) {
+void features_process(void* instance, void* p_args, void* ret) {
     var inst = cast(FeatureState*, instance);
     var args = cast(void**, p_args);
     f64 delta = *(cast(f64*, *args));

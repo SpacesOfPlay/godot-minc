@@ -8,6 +8,7 @@ GDExtensions written in minc. One Godot project, several examples.
 | `features.mc` | `MincFeatures` | A tour of the binding surface: a `value` property, 1- and 2-arg signals, Variant round-trip, singleton / static / utility calls. Prints a line per step. |
 | `hello.mc` | `HelloMinc` | The minimal starter: a `Node` whose `_ready` prints. Copy it to begin a new extension. |
 | `game.mc` | `SokoGame` | A playable 3D Sokoban. |
+| `asteroids.mc` | `AsteroidsGame` | 2D asteroids with hot-reloaded game logic: the node embeds the minc compiler (libminc) and recompiles `asteroids/script.mc` when you save it — ship, rocks, and score survive the swap. Arrows steer, up thrusts, space fires. |
 
 ## Build + run
 
