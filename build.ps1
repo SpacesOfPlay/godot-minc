@@ -77,6 +77,9 @@ foreach ($lm in @((Join-Path (Split-Path $minc) "libminc.dll"),
                   (Join-Path $root "..\build\libminc.dll"))) {
     if (Test-Path $lm) { Copy-Item $lm (Join-Path $proj "bin") -Force; break }
 }
+if (-not (Test-Path (Join-Path $proj "bin\libminc.dll"))) {
+    Write-Host "warning: libminc.dll not found next to minc — the asteroids extension will fail to load" -ForegroundColor Yellow
+}
 $mincLib = Join-Path (Split-Path $minc) "lib"
 if (-not (Test-Path $mincLib)) { $mincLib = Join-Path $root "..\lib" }
 if (Test-Path $mincLib) {
@@ -105,10 +108,21 @@ if (-not $godot) {
     exit 1
 }
 
-# One-time editor import so Godot writes .godot/extension_list.cfg
-# makes the extensions load on run
-if (-not (Test-Path (Join-Path $proj ".godot\extension_list.cfg"))) {
-    Write-Host ":: importing project (first run)"
+# Editor import so Godot writes .godot/extension_list.cfg — the extensions
+# load on run only if listed there. Re-import when any .gdextension is
+# missing from the list: a stale one (extension added later, or its library
+# failed to load during a prior import) silently drops the class from the
+# scene ("Cannot get class ...", placeholder node).
+$cfg = Join-Path $proj ".godot\extension_list.cfg"
+$needImport = -not (Test-Path $cfg)
+if (-not $needImport) {
+    $listed = Get-Content $cfg
+    foreach ($gd in Get-ChildItem (Join-Path $proj "*.gdextension")) {
+        if ($listed -notcontains "res://$($gd.Name)") { $needImport = $true; break }
+    }
+}
+if ($needImport) {
+    Write-Host ":: importing project"
     & $godot --headless --editor --path $proj --quit-after 300 2>&1 | Out-Null
 }
 

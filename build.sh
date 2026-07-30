@@ -86,6 +86,9 @@ esac
 for lm in "$(dirname "$MINC")/$LM" "$ROOT/../build/$LM"; do
     if [ -f "$lm" ]; then cp -f "$lm" "$PROJ/bin/"; break; fi
 done
+if [ ! -f "$PROJ/bin/$LM" ]; then
+    echo "warning: $LM not found next to minc — the asteroids extension will fail to load" >&2
+fi
 MINC_LIB="$(dirname "$MINC")/lib"
 [ -d "$MINC_LIB" ] || MINC_LIB="$ROOT/../lib"
 if [ -d "$MINC_LIB" ]; then
@@ -114,10 +117,20 @@ if [ -z "$GODOT" ]; then
     exit 1
 fi
 
-# One-time editor import so Godot writes .godot/extension_list.cfg
-# makes the extensions load on run
-if [ ! -f "$PROJ/.godot/extension_list.cfg" ]; then
-    echo ":: importing project (first run)"
+# Editor import so Godot writes .godot/extension_list.cfg — the extensions
+# load on run only if listed there. Re-import when any .gdextension is
+# missing from the list: a stale one (extension added later, or its library
+# failed to load during a prior import) silently drops the class from the
+# scene ("Cannot get class ...", placeholder node).
+CFG="$PROJ/.godot/extension_list.cfg"
+NEED_IMPORT=0
+if [ ! -f "$CFG" ]; then NEED_IMPORT=1; else
+    for gd in "$PROJ"/*.gdextension; do
+        grep -qF "res://$(basename "$gd")" "$CFG" || { NEED_IMPORT=1; break; }
+    done
+fi
+if [ "$NEED_IMPORT" = 1 ]; then
+    echo ":: importing project"
     "$GODOT" --headless --editor --path "$PROJ" --quit-after 300 >/dev/null 2>&1 || true
 fi
 
