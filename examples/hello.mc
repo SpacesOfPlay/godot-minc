@@ -1,5 +1,5 @@
 // Starter GDExtension in minc. Copy this file, rename things, and build
-// (./build.sh hello): write your callbacks, register them in gd_register().
+// (minc run hello): write your callbacks, register them in gd_register().
 // `import godot;` brings in the GDExtension entry point, the engine bindings,
 // and the registration API.
 

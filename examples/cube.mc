@@ -5,7 +5,7 @@
 // For a tour of the full binding surface (properties, signals, Variant,
 // singletons, static and utility calls), see features.mc.
 //
-// Build + run: ../build.sh cube   (from the repo root, builds + launches)
+// Build + run: minc run cube   (from the repo root, builds + launches)
 
 import godot;
 

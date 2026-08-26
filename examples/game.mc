@@ -1,6 +1,6 @@
 // 3D Sokoban in minc
 //
-// Build + run: ../build.sh game   (from the repo root, builds + launches)
+// Build + run: minc run game   (from the repo root, builds + launches)
 
 import godot;
 
