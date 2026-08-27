@@ -14,7 +14,7 @@ MIT License, below.
 
 > **Godot is separately licensed.** The Godot engine is MIT-licensed by the
 > Godot Engine contributors (<https://godotengine.org/license>). This repo does
-> not redistribute Godot; `get_godot.ps1` / `get_godot.sh` download
+> not redistribute Godot; the build script (`build.mc`) downloads
 > an official release on demand into `godot/` (gitignored). The bindings
 > in `lib/godot_classes.mc` / `godot_enums.mc` / `godot_utility.mc` are
 > generated from Godot's public `extension_api.json` (vendored in `bindgen/`).

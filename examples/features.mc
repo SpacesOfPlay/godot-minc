@@ -6,7 +6,7 @@
 //
 // For the minimal rendering example, see cube.mc.
 //
-// Build + run: ../build.sh features   (from the repo root, builds + launches)
+// Build + run: minc run features   (from the repo root, builds + launches)
 
 import godot;
 

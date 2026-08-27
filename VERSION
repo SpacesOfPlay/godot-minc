@@ -1,5 +1,5 @@
 godot-minc snapshot
-  godot:  4.3-stable (download pinned by get_godot.*)
+  godot:  4.3-stable (download pinned by build.mc)
   minc:   install from minc.dev (see install_minc.md)
-  built:  2026-07-30 22:42:01
-  build:  b3dc6f6c-dirty
+  built:  2026-08-26 20:48:19
+  build:  9f42079c

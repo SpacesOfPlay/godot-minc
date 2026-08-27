@@ -14,18 +14,6 @@
 
 import godot_enums;
 
-// Debug output goes to stderr, via the per-OS write below.
-when os(macos) || os(ios) {
-    extern "libSystem.B.dylib" i64 write(i64 fd, void* buf, i64 n);
-}
-when os(linux) || os(android) {
-    extern "libc.so.6" i64 write(i64 fd, void* buf, i64 n);
-}
-when os(windows) {
-    extern "kernel32.dll" i64 GetStdHandle(i32 std);
-    extern "kernel32.dll" i32 WriteFile(i64 h, void* buf, u32 n, void* written, void* overlapped);
-}
-
 // Typed wrappers for Godot's values, so signatures carry a type, not bare
 // void*. GdObject is a pointer-only handle to an engine object. The rest are
 // value types sized to Godot's float_64 build — declare them typed, build the
@@ -170,13 +158,7 @@ i64 gd_strlen(u8* s) {
 }
 
 void gd_write_stderr(void* buf, i64 n) {
-    when os(windows) {
-        u32 written = 0;
-        WriteFile(GetStdHandle(0 - 12), buf, cast(u32, n), &written, null);  // STD_ERROR_HANDLE
-    }
-    when os(macos) || os(ios) || os(linux) || os(android) {
-        write(2, buf, n);
-    }
+    write(stderr(), buf, cast(i32, n));
     return;
 }
 

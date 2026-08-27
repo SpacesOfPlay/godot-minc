@@ -26,9 +26,8 @@ void gd_register() {
 
 You need two things: the minc compiler and the Godot 4.3 engine.
 The one-liner in [install_minc.md](install_minc.md) installs the
-compiler from [minc.dev](https://minc.dev); `get_godot.*` fetches a
-pinned, SHA-verified Godot into `godot/` (gitignored). The build script
-picks both up automatically.
+compiler from [minc.dev](https://minc.dev); the first `minc run`
+fetches a pinned, SHA-verified Godot into `godot/` (gitignored).
 
 See [Using an existing install](#using-an-existing-install).
 
@@ -38,9 +37,8 @@ See [Using an existing install](#using-an-existing-install).
 git clone <this-repo> godot-minc
 cd godot-minc
 powershell -c "irm minc.dev/install.ps1 | iex"   # install minc
-./get_godot.ps1           # downloads Godot 4.3 -> godot/
-./build.ps1               # lists the available examples
-./build.ps1 cube          # builds the examples + runs cube.tscn
+minc run                  # lists the available examples
+minc run cube             # builds the examples + runs cube.tscn
 ```
 
 ### macOS / Linux
@@ -49,12 +47,13 @@ powershell -c "irm minc.dev/install.ps1 | iex"   # install minc
 git clone <this-repo> godot-minc
 cd godot-minc
 curl -fsSL https://minc.dev/install | bash       # install minc
-./get_godot.sh            # downloads Godot 4.3 -> godot/
-./build.sh                # lists the available examples
-./build.sh cube           # builds the examples + runs cube.tscn
+minc run                  # lists the available examples
+minc run cube             # builds the examples + runs cube.tscn
 ```
 
-Run with no argument to list the examples.
+`minc run` in this folder drives [build.mc](build.mc), the repo's build
+script. `minc build` compiles without launching Godot; `minc clean`
+removes the built extensions and Godot's import cache.
 
 
 ## Using an existing install
@@ -64,11 +63,11 @@ Run with no argument to list the examples.
   then `PATH`.
 
 - Godot: set `GODOT` to your Godot 4.3 binary, or put `godot` on `PATH`. The
-  build script checks `GODOT`, then `godot/`, then `PATH`. The `get_godot`
-  scripts no-op when `GODOT` is already set.
+  build script checks `GODOT`, then `godot/`, then `PATH`, and only downloads
+  when all three come up empty.
 
 ```sh
-MINC=/path/to/minc GODOT=/path/to/Godot ./build.sh cube
+MINC=/path/to/minc GODOT=/path/to/Godot minc run cube
 ```
 
 
@@ -96,9 +95,9 @@ examples/bin/cube.dll        cube.gdextension  ->  Godot loads it
 lib/        the binding modules (import godot; resolves to lib/godot.mc)
 examples/   the Godot project (one project, several example extensions)
 bindgen/    the binding generator + Godot API spec (extend the bound surface)
-install_minc.md          how to install the minc compiler
-get_godot.ps1 / .sh      download the Godot editor -> godot/
-build.ps1 / build.sh     build an example + run its scene
+install_minc.md   how to install the minc compiler
+build.mc          the build script `minc run` drives: builds the examples,
+                  fetches the Godot editor -> godot/, runs a scene
 ```
 
 - Examples: [`examples/README.md`](examples/README.md).
