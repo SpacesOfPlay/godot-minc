@@ -673,7 +673,7 @@ void gd_deinitialize(void* userdata, i32 level) {
 }
 
 // --- Entry point ----------------------------------------------------------
-u8 minc_gdextension_init(void* p_get_proc_address, void* p_library, void* r_initialization) {
+export u8 minc_gdextension_init(void* p_get_proc_address, void* p_library, void* r_initialization) {
     var get_proc = cast(fn(u8*): void*, p_get_proc_address);
     gd_library = p_library;
 
