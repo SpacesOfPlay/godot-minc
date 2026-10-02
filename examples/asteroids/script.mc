@@ -22,9 +22,9 @@ const f32 ROCK_MED    = 24.0f;
 const f32 ROCK_SMALL  = 12.0f;
 
 
-u32 script_abi_version() { return GAME_ABI_VERSION; }
+export u32 script_abi_version() { return GAME_ABI_VERSION; }
 
-void script_reloaded(ScriptCtx* ctx) {
+export void script_reloaded(ScriptCtx* ctx) {
     ctx.api.log("script: reloaded");
 }
 
@@ -124,7 +124,7 @@ void ship_hit(ScriptCtx* ctx) {
     reset_ship(w);
 }
 
-void script_update(ScriptCtx* ctx) {
+export void script_update(ScriptCtx* ctx) {
     World* w = ctx.world;
     f32 dt = ctx.dt;
 
